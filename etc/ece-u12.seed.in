@@ -1,0 +1,87 @@
+## Options to set on the command line 
+## Setup Keyboard and Language
+d-i debian-installer/locale string en_US.utf8
+d-i console-setup/ask_detect boolean false
+d-i console-setup/layout string USA
+d-i kbd-chooser/method select American English
+
+## Configure Networking
+d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_domain string unassigned-domain
+# Turn off asking for wep string
+d-i netcfg/wireless_wep string 
+
+
+## Configure Clock
+d-i time/zone string UTC
+d-i clock-setup/utc-auto boolean true
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+# NTP server to use. The default is almost always fine here.
+#d-i clock-setup/ntp-server string ntp.example.com
+
+## Partition the Disks
+d-i partman-auto/method string lvm
+#d-i partman-auto/purge_lvm_from_device boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-auto/choose_recipe select atomic
+d-i partman/confirm_write_new_label boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+# Write the changes to disks and configure LVM?
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/guided_size string max
+#http://ubuntu-virginia.ubuntuforums.org/showthread.php?p=9626883
+#Message: "write the changes to disk and configure lvm preseed"
+#http://serverfault.com/questions/189328/ubuntu-kickstart-installation-using-lvm-waits-for-input
+#preseed partman-lvm/confirm_nooverwrite boolean true
+
+## Use mirror
+#d-i apt-setup/use_mirror boolean true
+#d-i mirror/country string us
+#choose-mirror-bin mirror/protocol string http
+#choose-mirror-bin mirror/http/hostname string 192.168.4.150
+#choose-mirror-bin mirror/http/directory string /ubuntu
+#choose-mirror-bin mirror/suite select maverick
+#d-i debian-installer/allow_unauthenticated string true
+#choose-mirror-bin mirror/http/proxy string
+d-i mirror/country        string manual
+d-i mirror/http/hostname  string mirror.anl.gov
+d-i mirror/http/directory string /pub/ubuntu/
+d-i mirror/http/proxy     string
+
+## Package Selection and APT configuration
+# Choices: Dialog, Readline, Gnome, Kde, Editor, Noninteractive
+d-i debconf debconf/frontend select Noninteractive
+## Which Kernel Image to use
+d-i base-installer/kernel/override-image string linux-server
+d-i pkgsel/install-language-support boolean false
+tasksel tasksel/first multiselect standard, ubuntu-server
+# minimum is puppet and ssh and ntp
+# Individual additional packages to install
+d-i pkgsel/include string openssh-server
+# Whether to upgrade packages after debootstrap.
+# Allowed values: none, safe-upgrade, full-upgrade
+d-i pkgsel/upgrade select full-upgrade
+
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean true
+d-i finish-install/reboot_in_progress note
+
+#For the update
+d-i pkgsel/update-policy select none
+
+## Default root password and grub password
+d-i passwd/root-login boolean true
+d-i passwd/make-user boolean false
+d-i passwd/root-password-crypted password $1$2SOIC5Ai$wWanPzE/yYBlA09ZsQKwG0
+# or encrypted using an MD5 hash, see grub-md5-crypt(8).
+d-i grub-installer/password-crypted password $1$2SOIC5Ai$wWanPzE/yYBlA09ZsQKwG0
+
+d-i preseed/late_command string \
+mkdir -p /target/root/.ssh; \
+echo "@PUBKEY@" > /target/root/.ssh/authorized_keys 
+

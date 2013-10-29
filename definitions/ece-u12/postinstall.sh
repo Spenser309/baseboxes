@@ -2,7 +2,6 @@
 
 date > /etc/vagrant_box_build_time
 
-
 # Apt-install various things necessary for Ruby, guest additions,
 # etc., and remove optional things to trim down the machine.
 apt-get -y update
@@ -11,43 +10,31 @@ apt-get -y install linux-headers-$(uname -r) build-essential
 apt-get -y install puppet rubygems 
 apt-get clean
 
-gem install chef --no-ri --no-rdoc
-
 set -x
 # Installing the virtualbox guest additions
-apt-get -y install dkms xserver-xorg 
-VBOX_VERSION=$(cat $HOME/.vbox_version)
-cd /tmp
-wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
-mount -o loop VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
-sh /mnt/VBoxLinuxAdditions.run
+
+# Without libdbus virtualbox would not start automatically after compile
+apt-get -y install --no-install-recommends libdbus-1-3
+
+# Remove existing VirtualBox guest additions
+/etc/init.d/virtualbox-ose-guest-utils stop
+rmmod vboxguest
+aptitude -y purge virtualbox-ose-guest-x11 virtualbox-ose-guest-dkms virtualbox-ose-guest-utils
+aptitude -y install dkms
+
+# Install the VirtualBox guest additions
+VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
+VBOX_ISO=VBoxGuestAdditions_$VBOX_VERSION.iso
+mount -o loop $VBOX_ISO /mnt
+yes|sh /mnt/VBoxLinuxAdditions.run
 umount /mnt
 
-rm VBoxGuestAdditions_$VBOX_VERSION.iso
-
+# Cleanup
+rm $VBOX_ISO
 set +x
-
-# Setup sudo to allow no-password sudo for "vagrant" and admin group.
-groupadd -r admin
-/usr/sbin/useradd --create-home vagrant
-sleep 1
-echo "vagrant:vagrant" | /usr/sbin/chpasswd
-usermod -a -G admin vagrant
-
-cp /etc/sudoers /etc/sudoers.orig
-sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
-sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
 
 # Install NFS client
 apt-get -y install nfs-common
-
-# Installing vagrant keys
-mkdir /home/vagrant/.ssh
-chmod 700 /home/vagrant/.ssh
-cd /home/vagrant/.ssh
-wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys
-chmod 600 /home/vagrant/.ssh/authorized_keys
-chown -R vagrant.vagrant /home/vagrant/.ssh
 
 # Remove items used for building, since they aren't needed anymore
 apt-get -y remove linux-headers-$(uname -r) build-essential
@@ -73,5 +60,6 @@ echo "Adding a 2 sec delay to the interface up, to make the dhclient happy"
 echo "pre-up sleep 2" >> /etc/network/interfaces
 
 apt-get -y dist-upgrade
+apt-get -y clean
 
 exit
