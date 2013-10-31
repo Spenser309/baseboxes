@@ -2,8 +2,11 @@
 
 set -x
 
+if [ -z "$SILENT" ]; then
+OPTS="--auto --force"
+else
 OPTS="--auto --nogui --force"
-
+fi
 VAGRANT="bundle exec vagrant"
 VEEWEE="bundle exec veewee"
 

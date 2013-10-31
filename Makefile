@@ -13,7 +13,7 @@ definitions/$$($(1)_BASE)/$(1): etc/$(1).in etc/ssh.pub
 	PUBKEY=$$$$(cat etc/ssh.pub); sed "s#@PUBKEY@#$$$${PUBKEY}#" etc/$(1).in > definitions/$$($(1)_BASE)/$(1)
 
 $$($(1)_BASE).box: $$($(1)_DEPS) definitions/$$($(1)_BASE)/$(1)
-	bin/buildbox.sh $$($(1)_BASE)
+	SILENT=1 bin/buildbox.sh $$($(1)_BASE)
 
 TARGETS += $$($(1)_BASE).box
 CLEAN_TARGETS += \
@@ -23,7 +23,9 @@ endef
 
 .bundler:
 	# Work around for bug in eventmachine (related to winrm)
-	bundle config --local build.eventmachine -- --with-cflags=\"-O2 -pipe -march=native -w\"
+	if [[ "$$\(facter osfamily\)" == "Debian" ]]; then \
+		bundle config --local build.eventmachine -- --with-cflags=\"-O2 -pipe -march=native -w\"; \
+	fi; \
 	bundle install --path=.bundler
 
 $(foreach box,$(BOXES),$(eval $(call buildbox,$(box))))

@@ -24,7 +24,7 @@ wget http://downloads.sourceforge.net/sevenzip/7z922-x64.msi
 msiexec /qb /i 7z922-x64.msi
 
 # Download Virtualbox Additions
-VBOX_VERSION="4.1.8" #"4.0.8"
+VBOX_VERSION="$(cat /.vbox_version)" #"4.0.8"
 wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
 
 # Extract the installer from the ISO (WHY WHY WHY isn't this available not bundled within an ISO)
@@ -43,6 +43,8 @@ certutil -addstore -f "TrustedPublisher" a:oracle-cert.cer
 curl -L http://www.opscode.com/chef/install.msi -o chef-client-latest.msi
 msiexec /qb /i chef-client-latest.msi
 
+curl -L https://downloads.puppetlabs.com/windows/puppet-3.3.1.msi -o puppet.msi
+msiexec /qn /i puppet.msi
 
 #http://www.msfn.org/board/topic/105277-howto-create-a-fully-up-to-date-xp-x64-dvd/
 
@@ -70,5 +72,5 @@ net.exe use  '\\vboxsvr\veewee-validation'
 
 # Reboot
 # http://www.techrepublic.com/blog/datacenter/restart-windows-server-2003-from-the-command-line/245
-shutdown.exe /s /t 0 /d p:2:4 /c "Vagrant initial reboot"
+#shutdown.exe /s /t 0 /d p:2:4 /c "Vagrant initial reboot"
 

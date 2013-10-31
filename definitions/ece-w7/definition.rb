@@ -36,7 +36,7 @@ Veewee::Session.declare({
   :postinstall_timeout => "10000",
   :postinstall_files => ["postinstall.sh"],
   # No sudo on windows
-  :sudo_cmd => "sh '%f'",
+  :sudo_cmd => "%f",
   # Shutdown is different as well
-  :shutdown_cmd => "shutdown /p /t 60 /c \"Vagrant Shutdown\" /f /d p:4:1",
+  :shutdown_cmd => "shutdown /s /t 10 /f /d p:4:1 /c \"Vagrant Shutdown\"",
 })
