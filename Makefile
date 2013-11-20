@@ -1,6 +1,6 @@
 # Makefile for Baseboxes
 .DEFAULT_GOAL := all
-BOXES = ece-sl6.ks ece-u12.seed
+BOXES = ece-sl6.ks ece-u12.seed ece-w7.unattended
 TARGETS = .bundler
 
 define buildbox
@@ -8,6 +8,10 @@ define buildbox
 $(1)_BASE = $(basename $(1))
 $(1)_TYPE = $(suffix $(1))
 $(1)_DEPS = $(wildcard definitions/$(basename $(1))/*)
+
+ifeq ($$($(1)_TYPE),unattended)
+   $$(info "hello windows")
+endif
 
 definitions/$$($(1)_BASE)/$(1): etc/$(1).in etc/ssh.pub
 	PUBKEY=$$$$(cat etc/ssh.pub); sed "s#@PUBKEY@#$$$${PUBKEY}#" etc/$(1).in > definitions/$$($(1)_BASE)/$(1)
@@ -23,8 +27,8 @@ endef
 
 .bundler:
 	# Work around for bug in eventmachine (related to winrm)
-	if [[ "$$\(facter osfamily\)" == "Debian" ]]; then \
-		bundle config --local build.eventmachine -- --with-cflags=\"-O2 -pipe -march=native -w\"; \
+	if [[ "$$(facter osfamily)" == "Debian" ]]; then \
+		bundle config --local build.eventmachine -- --with-cflags=\"-O2 -pipe -march=native -w\"\"; \
 	fi; \
 	bundle install --path=.bundler
 

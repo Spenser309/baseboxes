@@ -1,5 +1,7 @@
 ## Options to set on the command line 
 ## Setup Keyboard and Language
+#d-i preseed/early_command string /usr/bin/killall syslogd && \
+#/sbin/syslogd -m 0 -O /var/log/syslog -S -l $LOGLVL -L -R $LOGHOST
 d-i debian-installer/locale string en_US.utf8
 d-i console-setup/ask_detect boolean false
 d-i console-setup/layout string USA

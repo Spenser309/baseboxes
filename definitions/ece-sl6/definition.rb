@@ -14,7 +14,7 @@ Veewee::Session.declare({
   :iso_md5 => "e9625e2c3b4b02d94ffa478773d5d58f",
   :iso_download_timeout => 1000,
   :boot_wait => "15",
-  :boot_cmd_sequence => [ '<Tab> text ks=http://%IP%:%PORT%/ece-sl6.ks<Enter>' ],
+  :boot_cmd_sequence => [ '<Tab> linux sshd=1 ks=http://%IP%:%PORT%/ece-sl6.ks<Enter>' ],
   :kickstart_port => "7124",
   :kickstart_timeout => 10000,
   :kickstart_file => "ece-sl6.ks",

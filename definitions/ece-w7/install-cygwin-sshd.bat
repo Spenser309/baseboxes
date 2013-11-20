@@ -22,7 +22,8 @@ cmd /c %SystemDrive%\cygwin\bin\bash -c 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/
 
 %SystemDrive%\cygwin\usr\bin\sleep 1
 
-%SystemDrive%\cygwin\bin\bash -c 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin /usr/bin/ssh-host-config -y -c "ntsecbinmode tty" -w "abc&&123!!" '
+REM %SystemDrive%\cygwin\bin\bash -c 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin /usr/bin/ssh-host-config -y -c "ntsecbinmode tty" -w "abc&&123!!" '
+%SystemDrive%\cygwin\bin\bash -c 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin /usr/bin/ssh-host-config -y -c "ntsec tty" -w "abc&&123!!" '
 
 %SystemDrive%\cygwin\usr\bin\sleep 2 
 
@@ -39,3 +40,11 @@ cmd /c %SystemDrive%\cygwin\bin\bash -c  'PATH=/usr/local/bin:/usr/bin:/bin:/usr
 # Fix corrupt recycle bin
 # http://www.winhelponline.com/blog/fix-corrupted-recycle-bin-windows-7-vista/
 cmd /c rd /s /q c:\$Recycle.bin
+
+cmd /c %SystemDrive%\cygwin\bin\bash -c 'PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin echo "yes" | /usr/bin/cyglsa-config'
+
+set /p Ready=Ready to reboot:
+
+cmd /c shutdown /s /t 10 /f /d p:4:1 /c \"Vagrant Shutdown\"
+
+

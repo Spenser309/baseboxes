@@ -27,9 +27,9 @@ Veewee::Session.declare({
   ],
   :ssh_login_timeout => "10000",
   # Actively attempt to winrm (no ssh on base windows) in for 10000 seconds
-  :ssh_user => "vagrant", 
-  :ssh_password => "vagrant", 
-  :ssh_key => "", 
+  :ssh_user => "Admin",
+  :ssh_password => "vagrant",
+  #:ssh_key => "ecasp",
   :ssh_host_port => "7226", 
   :ssh_guest_port => "22",
   # And run postinstall.sh for up to 10000 seconds

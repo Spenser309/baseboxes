@@ -43,7 +43,7 @@ certutil -addstore -f "TrustedPublisher" a:oracle-cert.cer
 curl -L http://www.opscode.com/chef/install.msi -o chef-client-latest.msi
 msiexec /qb /i chef-client-latest.msi
 
-curl -L https://downloads.puppetlabs.com/windows/puppet-3.3.1.msi -o puppet.msi
+curl -L http://downloads.puppetlabs.com/windows/puppet-3.3.1.msi -o puppet.msi
 msiexec /qn /i puppet.msi
 
 #http://www.msfn.org/board/topic/105277-howto-create-a-fully-up-to-date-xp-x64-dvd/
