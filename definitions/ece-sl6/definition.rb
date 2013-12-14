@@ -21,7 +21,7 @@ Veewee::Session.declare({
   :ssh_login_timeout => "10000",
   :ssh_user => "root",
   :ssh_password => "",
-  :ssh_key => "ecasp",
+  :ssh_key => "$HOME/.ssh/ecasp",
   :ssh_host_port => "7224",
   :ssh_guest_port => "22",
   :sudo_cmd => "echo '%p'| bash '%f'",
