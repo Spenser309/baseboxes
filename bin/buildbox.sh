@@ -22,7 +22,7 @@ function buildbox {
 
 function cleanup {
 	$VAGRANT basebox destroy -n $BOX 
-	exit 1
+	return 1
 }
 
 trap cleanup EXIT
