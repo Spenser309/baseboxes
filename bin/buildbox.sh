@@ -18,11 +18,11 @@ function buildbox {
 	sync
 	sleep 120
 	$VEEWEE vbox export --force $BOX
-	#	$VAGRANT basebox export --force $BOX 
 }
 
 function cleanup {
 	$VAGRANT basebox destroy -n $BOX 
+	exit 1
 }
 
 trap cleanup EXIT
@@ -31,5 +31,5 @@ buildbox 2>&1
 sleep 30
 
 trap - EXIT
-cleanup
+cleanup || true
 exit 0
