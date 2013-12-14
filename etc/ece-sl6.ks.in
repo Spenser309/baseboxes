@@ -4,13 +4,11 @@ lang en_US.UTF-8
 keyboard us
 network --bootproto dhcp
 rootpw root
-sshpw --username="root" "root" --plaintext --lock
 firewall --disabled
 authconfig --enableshadow --enablemd5
 selinux --disabled
 timezone --utc UTC
 bootloader --location=mbr
-#logging --host=$LOGHOST --level=$LOGLEVEL
 cmdline
 skipx
 zerombr
@@ -22,45 +20,12 @@ auth --useshadow --enablemd5
 firstboot --disabled
 reboot
 
-repo --name=epel --baseurl="http://mirror.anl.gov/pub/fedora/epel/6/x86_64/"
-
-repo --name=epel-testing --baseurl="http://mirror.anl.gov/pub/fedora/epel/testing/6/x86_64/" --includepkgs=puppet,puppet-server
-
-%packages
+%packages --nobase
 @ core
-@ fonts
-ruby
-ruby-devel
-rubygems
-kernel-devel
-gcc
-gcc-c++
-bzip2
-make
-zlib-devel
-openssl-devel
-readline-devel
-sqlite-devel
-puppet
-facter
-redhat-lsb
-
 -ipw2100-firmware
 -ipw2200-firmware
 -ivtv-firmware
 
-%pre 
-#!/bin/bash
-mkdir /root/.ssh
-chmod 700 /root/.ssh
-echo "@PUBKEY@" > /root/.ssh/authorized_keys
-chmod 600 /root/.ssh/authorized_keys
-service
-
-ifconfig
-
-sleep 10
-%end
 %post --log=/root/ks-post.log
 
 set -x
@@ -70,6 +35,6 @@ echo "@PUBKEY@" > /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
 
 # disable root passwd
-passwd -l root
+#passwd -l root
 
 %end
