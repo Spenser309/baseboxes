@@ -27,11 +27,7 @@ Veewee::Session.declare({
   :sudo_cmd => "echo '%p'| bash '%f'",
   :shutdown_cmd => "/sbin/halt -h -p",
   :postinstall_files => [
-    "base.sh",
-    "epel.sh",
-    "vagrant.sh",
-    "virtualbox.sh",
-    "cleanup.sh"
+    "postinstall.sh",
   ],
   :postinstall_timeout => 10000
 })
