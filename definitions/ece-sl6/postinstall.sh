@@ -1,5 +1,6 @@
-date > /etc/vagrant_box_build_time
 #!/bin/bash
+date > /etc/vagrant_box_build_time
+sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
 # Install EPEL Repo
 yum -y install epel-release
@@ -26,7 +27,3 @@ yum -y install puppet
 rm -rf VBoxGuestAdditions_$VBOX_VERSION.iso
 # cannot remove dev tools must be present for dkms
 yum -y clean all
-
-dd if=/dev/zero of=/EMTPY bs=1M
-rm -f /EMPTY
-
