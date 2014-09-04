@@ -4,31 +4,26 @@ set -x
 set -e
 
 if [ -z "$SILENT" ]; then
-OPTS="--auto --force"
+OPTS=""
 else
-OPTS="--auto --nogui --force"
+OPTS=""
 fi
-VAGRANT="bundle exec vagrant"
-VEEWEE="bundle exec veewee"
-
+PACKER="packer"
 BOX=$1
 
 function buildbox {
-	$VEEWEE vbox build $OPTS $BOX
-	sync
-	sleep 120
-	$VEEWEE vbox export --force $BOX
+	cd definitions/$BOX
+	$PACKER build $OPTS $BOX.json
+	mv $BOX.box ../../
 }
 
 function cleanup {
-	$VAGRANT basebox destroy -n $BOX 
 	return 1
 }
 
 trap cleanup EXIT
 
 buildbox 2>&1
-sleep 30
 
 trap - EXIT
 cleanup || true

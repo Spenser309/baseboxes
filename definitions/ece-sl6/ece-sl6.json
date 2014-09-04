@@ -1,0 +1,44 @@
+{
+  "builders": [{
+    "name": "ece-sl6-vbox",
+    "type": "virtualbox-iso",
+    "boot_command": [
+      "<tab> linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ece-sl6.ks<enter><wait>"
+    ],
+    "boot_wait": "15s",
+    "disk_size": 10140,
+    "hard_drive_interface": "sata",
+    "guest_os_type": "RedHat_64",
+    "http_directory": "http",
+    "iso_checksum": "8edc9b64f0622646c5d5e599bcf437175c83abcb15a374d73dc820379e1a443e",
+    "iso_checksum_type": "sha256",
+    "iso_url": "http://mirror.anl.gov/pub/scientific-linux/6.5/x86_64/iso/SL-65-x86_64-2014-01-27-Install-DVD.iso",
+    "ssh_username": "root",
+    "ssh_password": "root",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'root'| bash 'shutdown.sh'",
+    "headless": "true",
+    "guest_additions_mode": "disable",
+    "virtualbox_version_file": ".vbox_version",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "1024"],
+      ["modifyvm", "{{.Name}}", "--cpus", "2"]
+    ]
+  }],
+  "provisioners": [{
+    "type": "shell",
+      "scripts": [
+        "scripts/postinstall.sh"
+      ],
+      "override": {
+        "ece-sl6-vbox": {
+          "execute_command": "echo 'root'| bash '{{.Path}}'"
+        }
+      }
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "output": "ece-sl6.box"
+  }]
+}

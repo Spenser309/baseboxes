@@ -13,7 +13,6 @@ d-i netcfg/get_domain string unassigned-domain
 # Turn off asking for wep string
 d-i netcfg/wireless_wep string 
 
-
 ## Configure Clock
 d-i time/zone string UTC
 d-i clock-setup/utc-auto boolean true
@@ -79,9 +78,12 @@ d-i pkgsel/update-policy select none
 ## Default root password and grub password
 d-i passwd/root-login boolean true
 d-i passwd/make-user boolean false
-d-i passwd/root-password-crypted password $1$2SOIC5Ai$wWanPzE/yYBlA09ZsQKwG0
+d-i passwd/root-password password root
+d-i passwd/root-password-again password root
+d-i user-setup/allow-password-weak boolean true
+
 # or encrypted using an MD5 hash, see grub-md5-crypt(8).
-d-i grub-installer/password-crypted password $1$2SOIC5Ai$wWanPzE/yYBlA09ZsQKwG0
+d-i grub-installer/password password root
 
 d-i preseed/late_command string \
 mkdir -p /target/root/.ssh; \

@@ -1,0 +1,49 @@
+{
+  "provisioners": [{
+    "type": "shell",
+    "scripts": [
+      "scripts/postinstall.sh"
+    ],
+    "override": {
+      "ece-w7-vbox": {
+        "execute_command": "{{.Path}}"
+      }
+    }
+  }],
+  "builders": [{
+    "name": "ece-w7-vbox",
+    "headless": "true",
+    "type": "virtualbox-iso",
+    "boot_command": [
+      "<tab> <tab><tab><tab> <wait>"
+    ],
+    "boot_wait": "720s",
+    "disk_size": 20280,
+    "floppy_files": [
+      "floppy/Autounattend.xml",
+      "floppy/install-winrm.bat",
+      "floppy/oracle-cert.cer",
+      "floppy/install-cygwin-sshd.bat"
+    ],
+    "guest_os_type": "Windows7_64",
+    "iso_checksum": "ed15956fe33c13642a6d2cb2c7aa9749",
+    "iso_checksum_type": "md5",
+    "iso_url": "http://ecasp:SH308A@ephesus.ece.iit.edu/downloads/en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso",
+    "ssh_username": "Admin",
+    "ssh_password": "vagrant",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "shutdown_command": "echo 'shutdown /s /t 10 /f /d p:4:1 /c \"Vagrant Shutdown\"' > shutdown.sh; ./shutdown.sh",
+    "guest_additions_mode": "disable",
+    "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+    "virtualbox_version_file": ".vbox_version",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "1024" ],
+      ["modifyvm", "{{.Name}}", "--cpus", "2"]
+    ]
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "output": "ece-w7.box"
+  }]
+}

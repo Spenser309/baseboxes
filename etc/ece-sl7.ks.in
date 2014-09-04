@@ -1,6 +1,6 @@
 install
 cdrom
-#url --url="http://mirror.anl.gov/pub/scientific-linux/6/x86_64/os/"
+#url --url="http://mirror.anl.gov/pub/scientific-linux/7rolling/x86_64/os/"
 lang en_US.UTF-8
 keyboard us
 network --bootproto dhcp
@@ -25,9 +25,7 @@ reboot
 @ core
 redhat-lsb
 openssh-clients
--ipw2100-firmware
--ipw2200-firmware
--ivtv-firmware
+%end
 
 %post --log=/root/ks-post.log
 

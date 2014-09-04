@@ -1,18 +1,5 @@
 set -x
 
-# Create the home directory
-mkdir -p /home/vagrant
-chown vagrant /home/vagrant
-cd /home/vagrant
-
-# Install ssh certificates
-mkdir /home/vagrant/.ssh
-chmod 700 /home/vagrant/.ssh
-cd /home/vagrant/.ssh
-wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys
-chown -R vagrant /home/vagrant/.ssh
-cd ..
-
 # Install rpm,apt-get like code for cygwin
 # http://superuser.com/questions/40545/upgrading-and-installing-packages-through-the-cygwin-command-line
 wget http://apt-cyg.googlecode.com/svn/trunk/apt-cyg
@@ -40,21 +27,16 @@ certutil -addstore -f "TrustedPublisher" a:oracle-cert.cer
 
 
 #Rather than do the manual install of ruby and chef, just use the opscode msi
-curl -L http://www.opscode.com/chef/install.msi -o chef-client-latest.msi
-msiexec /qb /i chef-client-latest.msi
-
 curl -L http://downloads.puppetlabs.com/windows/puppet-3.3.1.msi -o puppet.msi
 msiexec /qn /i puppet.msi
 
 #http://www.msfn.org/board/topic/105277-howto-create-a-fully-up-to-date-xp-x64-dvd/
 
 #Making aliases
-cat <<EOF > /home/vagrant/.bash_profile
-alias chef-client="chef-client.bat"
+cat <<EOF > $HOME/.bash_profile
 alias gem="gem.bat"
 alias ruby="ruby.exe"
 alias puppet="puppet.bat"
-alias ohai="ohai.bat"
 alias irb="irb.bat"
 alias facter="facter.bat" 
 EOF
@@ -65,10 +47,6 @@ cat <<'EOF' > /bin/sudo
 exec "$@"
 EOF
 chmod 755 /bin/sudo
-
-# Mounting a directory
-net.exe use  '\\vboxsvr\veewee-validation'
-
 
 # Reboot
 # http://www.techrepublic.com/blog/datacenter/restart-windows-server-2003-from-the-command-line/245

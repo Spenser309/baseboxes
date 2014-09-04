@@ -1,0 +1,44 @@
+{
+  "builders": [{
+    "name": "ece-sl7-vbox",
+    "type": "virtualbox-iso",
+    "boot_command": [
+      "<tab> linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ece-sl7.ks<enter><wait>"
+    ],
+    "boot_wait": "15s",
+    "disk_size": 10140,
+    "hard_drive_interface": "sata",
+    "guest_os_type": "RedHat_64",
+    "http_directory": "http",
+    "iso_checksum": "10f70db3ee60de3dd67f1975dca60c6f0bc5384445023b1fc1125432cfe513e7",
+    "iso_checksum_type": "sha256",
+    "iso_url": "http://mirror.anl.gov/pub/scientific-linux/7rolling/x86_64/iso/SL-7-x86_64-DVD.iso",
+    "ssh_username": "root",
+    "ssh_password": "root",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'root'| bash 'shutdown.sh'",
+    "guest_additions_mode": "disable",
+    "virtualbox_version_file": ".vbox_version",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "1024"],
+      ["modifyvm", "{{.Name}}", "--cpus", "2"]
+    ]
+  }],
+  "provisioners": [{
+    "type": "shell",
+      "scripts": [
+        "scripts/postinstall.sh",
+        "scripts/hardware.sh"
+      ],
+      "override": {
+        "ece-sl7-vbox": {
+          "execute_command": "echo 'root'| bash '{{.Path}}'"
+        }
+      }
+  }],
+  "post-processors": [{
+    "type": "vagrant",
+    "output": "ece-sl7.box"
+  }]
+}
