@@ -5,19 +5,19 @@
       "scripts/postinstall.sh"
     ],
     "override": {
-      "ece-u12-vbox": {
+      "u12-vbox": {
         "execute_command": "echo ''|sudo -S sh '{{.Path}}'"
         }
       }
     }
   ],
   "builders": [{
-    "name": "ece-u12-vbox",
+    "name": "u12-vbox",
     "type": "virtualbox-iso",
     "headless": "true",
     "boot_command": [
       "<esc><esc><enter><wait>",
-      "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ece-u12.seed <wait>",
+      "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/u12.seed <wait>",
       "debian-installer=en_US auto locale=en_US kbd-chooser/method=us <wait>",
       "hostname={{ .Name }} <wait>",
       "fb=false debconf/frontend=noninteractive <wait>",
@@ -30,7 +30,7 @@
     "http_directory": "http",
     "iso_checksum": "4d5faa527e1660f0d84b801e47d9cec3181d0c77560825d7100746430e7bab70",
     "iso_checksum_type": "sha256",
-    "iso_url": "http://mirror.anl.gov/pub/ubuntu-iso/CDs-Ubuntu/precise/ubuntu-12.04.5-alternate-amd64.iso",
+    "iso_url": "http://mirror.pnl.gov/releases/12.04.5/ubuntu-12.04.5-alternate-amd64.iso",
     "ssh_username": "root",
     "ssh_password": "root",
     "ssh_port": 22,
@@ -45,6 +45,6 @@
   }],
   "post-processors": [{
     "type": "vagrant",
-    "output": "ece-u12.box"
+    "output": "u12.box"
   }]
 }

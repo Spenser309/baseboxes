@@ -3,13 +3,13 @@ cdrom
 #url --url="http://mirror.anl.gov/pub/scientific-linux/7rolling/x86_64/os/"
 lang en_US.UTF-8
 keyboard us
-network --bootproto dhcp
+network --bootproto=dhcp --device=eth0
 rootpw root
 firewall --disabled
 authconfig --enableshadow --enablemd5
 selinux --disabled
 timezone --utc UTC
-bootloader --location=mbr
+bootloader --location=mbr --append="biosdevname=0 net.ifnames=0"
 cmdline
 skipx
 zerombr
@@ -34,6 +34,8 @@ mkdir /root/.ssh
 chmod 700 /root/.ssh
 echo "@PUBKEY@" > /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
+
+grubby --update-kernel=all --args="biosdevname=0 net.ifnames=0"
 
 # disable root passwd
 #passwd -l root

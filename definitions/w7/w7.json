@@ -5,13 +5,13 @@
       "scripts/postinstall.sh"
     ],
     "override": {
-      "ece-w7-vbox": {
+      "w7-vbox": {
         "execute_command": "{{.Path}}"
       }
     }
   }],
   "builders": [{
-    "name": "ece-w7-vbox",
+    "name": "w7-vbox",
     "headless": "true",
     "type": "virtualbox-iso",
     "boot_command": [
@@ -44,6 +44,6 @@
   }],
   "post-processors": [{
     "type": "vagrant",
-    "output": "ece-w7.box"
+    "output": "w7.box"
   }]
 }

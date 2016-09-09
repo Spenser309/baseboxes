@@ -1,18 +1,18 @@
 {
   "builders": [{
-    "name": "ece-sl6-vbox",
+    "name": "sl6-vbox",
     "type": "virtualbox-iso",
     "boot_command": [
-      "<tab> linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ece-sl6.ks<enter><wait>"
+      "<tab> linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/sl6.ks<enter><wait>"
     ],
     "boot_wait": "15s",
     "disk_size": 10140,
     "hard_drive_interface": "sata",
     "guest_os_type": "RedHat_64",
     "http_directory": "http",
-    "iso_checksum": "8edc9b64f0622646c5d5e599bcf437175c83abcb15a374d73dc820379e1a443e",
+    "iso_checksum": "f09283e79c505387b9c9cb8b075ff8ef22229d84c84afe6ea8124082647038cc",
     "iso_checksum_type": "sha256",
-    "iso_url": "http://mirror.anl.gov/pub/scientific-linux/6.5/x86_64/iso/SL-65-x86_64-2014-01-27-Install-DVD.iso",
+    "iso_url": "http://mirrors.200p-sf.sonic.net/scientific/6rolling/x86_64/iso/SL-6.7-x86_64-DVD.iso",
     "ssh_username": "root",
     "ssh_password": "root",
     "ssh_port": 22,
@@ -32,13 +32,13 @@
         "scripts/postinstall.sh"
       ],
       "override": {
-        "ece-sl6-vbox": {
+        "sl6-vbox": {
           "execute_command": "echo 'root'| bash '{{.Path}}'"
         }
       }
   }],
   "post-processors": [{
     "type": "vagrant",
-    "output": "ece-sl6.box"
+    "output": "sl6.box"
   }]
 }
